@@ -7,6 +7,17 @@ Resource         common.resource
 Resource         pod.resource
 
 *** Keywords ***
+Install Addon From URL
+    [Arguments]    ${url}
+    addon_keywords.install_addon_yaml    ${url}
+
+Install Experimental Addon
+    [Arguments]    ${addon_name}    ${url}=${EMPTY}
+    [Documentation]    Apply an addon manifest from harvester/experimental-addons.
+    ...    An explicit url is used as-is; otherwise the branch is derived from the
+    ...    cluster release (v<major>.<minor>) with main as the fallback.
+    addon_keywords.install_experimental_addon    ${addon_name}    ${url}
+
 Get Initial State
     [Arguments]    ${addon_name}
     [Documentation]    Get initial state of addon (enabled/disabled)

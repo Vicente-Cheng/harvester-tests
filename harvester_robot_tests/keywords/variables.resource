@@ -52,6 +52,10 @@ ${LABEL_TEST}                   test-harvester
 # when the cluster does not have one yet; backup suites skip if both are absent.
 ${BACKUP_TARGET_NFS_ENDPOINT}    %{BACKUP_TARGET_NFS_ENDPOINT=}
 
+# LVM Addon (harvester/experimental-addons manifest). Leave empty to derive the
+# branch from the cluster release (v<major>.<minor>; dev builds use main).
+${LVM_ADDON_URL}                %{LVM_ADDON_URL=}
+
 # NVIDIA Driver Toolkit Addon
 ${NVIDIA_TOOLKIT_IMAGE_REPO}    %{NVIDIA_TOOLKIT_IMAGE_REPO=nvidia/driver-toolkit}
 ${NVIDIA_TOOLKIT_IMAGE_TAG}     %{NVIDIA_TOOLKIT_IMAGE_TAG=v1.7-20260209}
