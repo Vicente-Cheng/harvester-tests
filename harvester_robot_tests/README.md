@@ -305,6 +305,10 @@ The `run.sh` script automatically loads `.env` configuration and provides conven
 # Run suites in parallel with pabot (only used when -p is given)
 ./run.sh -p 3 -i volume           # Run volume suites across 3 processes
 
+# Run the ordered LVM flow: prepare, parallel workload suites, then cleanup.
+# run.sh automatically selects the LVM ordering file for this path.
+./run.sh -p 3 -f tests/regression/addon/lvm
+
 # Run against the REST API instead of CRD
 ./run.sh -S rest -i volume        # Same suites, REST strategy
 
@@ -317,6 +321,11 @@ The `run.sh` script automatically loads `.env` configuration and provides conven
 at the **suite (file)** level. Without `-p`, the plain `robot` runner is used as before.
 Suites that run concurrently must be self-contained and clean up only their own named
 resources in teardown (the volume suites follow this pattern).
+
+Some suites need more than per-suite isolation. The LVM suites share a cluster-wide
+addon and volume group, so they run as an ordered, opt-in flow (excluded from broad
+runs, CRD-only); see
+[`tests/regression/addon/lvm/README.md`](tests/regression/addon/lvm/README.md).
 
 **Operation strategy (CRD vs REST)**: The `vm`, `image`, and `volume` components pick
 their implementation from the `HARVESTER_OPERATION_STRATEGY` environment variable
