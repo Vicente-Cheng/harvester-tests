@@ -9,7 +9,7 @@ cleanup starts.
 [`lvm-order.txt`](./lvm-order.txt) fixes the execution into three stages:
 
 1. Enable the addon and provision the shared volume group.
-2. Run the attach, snapshot, and expansion suites concurrently.
+2. Run the attach, data-integrity, snapshot, and expansion suites concurrently.
 3. Clean the volume group and BlockDevices, then disable the addon.
 
 Each `#WAIT` is a Pabot stage barrier: every suite above it must finish before
@@ -32,6 +32,12 @@ By default the branch is derived from the cluster release (`v<major>.<minor>`, s
 v1.9.x cluster installs the chart pinned on `v1.9`); dev builds without a release
 version, or a release whose branch is not cut yet, use `main`. Set `LVM_ADDON_URL`
 to apply a specific manifest instead, e.g. a mirror in air-gapped setups.
+
+The data-integrity suite runs plain pods (default image `busybox:1.36.1`,
+override with `WORKLOAD_POD_IMAGE`) against LVM PVCs to checksum real data
+across republish and snapshot-restore. The image is pulled from the registry,
+so the cluster needs egress (or a pre-loaded/mirrored image) when this suite
+runs.
 
 Pabot 5.2.2 does not support comments in ordering files. A line beginning with
 `#` is treated as a suite name unless it is one of Pabot's directives, such as
