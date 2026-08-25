@@ -9,8 +9,11 @@ cleanup starts.
 [`lvm-order.txt`](./lvm-order.txt) fixes the execution into three stages:
 
 1. Enable the addon and provision the shared volume group.
-2. Run the attach, data-integrity, snapshot, snapshot-lifecycle, and
-   expansion suites concurrently.
+2. Run the attach, data-integrity, snapshot, snapshot-lifecycle, negative,
+   and expansion suites concurrently. The negative suite's oversized request
+   uses the striped type so it fails allocation instead of thin
+   overprovisioning, and it never allocates space, so it is safe alongside
+   the other suites.
 3. Clean the volume group and BlockDevices, then disable the addon.
 
 Each `#WAIT` is a Pabot stage barrier: every suite above it must finish before
